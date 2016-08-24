@@ -22,7 +22,7 @@ import (
 )
 
 type Service struct {
-	himatch      core.Himatch
+	himatch      *core.Himatch
 	contextPath  string
 	resourcePath string
 }
@@ -119,7 +119,7 @@ func userUpdate(tOld *model.User, tUser *user) *model.User {
 func (aService *Service) DeleteUser(aWriter http.ResponseWriter, aRequest *http.Request) {
 	aService.handler(func(aQueries url.Values, aRequestBody []byte) (int, interface{}, error) {
 		tID := aQueries.Get(":id")
-		if tError := aService.himatch.GetUser(tID); tError != nil {
+		if tError := aService.himatch.DeleteUser(tID); tError != nil {
 			return http.StatusInternalServerError, nil, tError
 		}
 		return http.StatusNoContent, nil, nil
@@ -163,12 +163,12 @@ func (aService *Service) FilterSpareTimes(aWriter http.ResponseWriter, aRequest 
 			return http.StatusBadRequest, nil, tError
 		}
 
-		if tRequest.Tags == nil && tRequest.Time == nil {
+		if tRequest.Tags == nil && tRequest.Time.IsZero() {
 			return http.StatusBadRequest, nil, nil
 		}
 
 		tSpareTimes := []model.SpareTime{}
-		if tRequest.Tags != nil && tRequest.Time != nil {
+		if tRequest.Tags != nil && !tRequest.Time.IsZero() {
 			tSpareTimes, tError := aService.himatch.FilterSpareTimesByTagsAndTime(tRequest.Time, tRequest.Tags)
 			if tError != nil {
 				return http.StatusInternalServerError, nil, tError

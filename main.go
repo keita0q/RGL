@@ -50,8 +50,15 @@ func main() {
 		}
 
 		tContextPath := "/" + tConfig.ContextPath + "/"
+		tDB, tError := bolt.NewDatabase(tConfig.SavePath)
+		if tError != nil {
+			log.Println(tError)
+			os.Exit(1)
+		}
+		defer tDB.Close()
+
 		tService := service.New(&service.Config{
-			Database:     bolt.NewDatabase(tConfig.SavePath),
+			Database:     tDB,
 			ContextPath:  tContextPath,
 			ResourcePath: tConfig.ResourcePath,
 		})
@@ -84,11 +91,11 @@ func main() {
 
 		http.Handle(tContextPath, tRouter)
 
-		http.ListenAndServe(":"+strconv.Itoa(tConfig.Port), nil)
+		http.ListenAndServe(":" + strconv.Itoa(tConfig.Port), nil)
 	}
 
 	tApp.Run(os.Args)
-
+	os.Exit(0)
 }
 
 type config struct {

@@ -10,8 +10,8 @@ type Himatch struct {
 	database database.Database
 }
 
-func New(aDatabase database.Database) {
-
+func New(aDatabase database.Database) *Himatch {
+	return &Himatch{database: aDatabase}
 }
 
 func (aHimatch *Himatch) GetUser(aID string) (*model.User, error) {
@@ -22,8 +22,8 @@ func (aHimatch *Himatch) SaveUser(aUser *model.User) error {
 	return aHimatch.database.SaveUser(aUser)
 }
 
-func (aHimatch *Himatch) DeleteUser(aUser *model.User) error {
-	return aHimatch.database.SaveUser(aUser)
+func (aHimatch *Himatch) DeleteUser(aID string) error {
+	return aHimatch.database.DeleteUser(aID)
 }
 
 func (aHimatch *Himatch) GetSpareTime(aID string) (*model.SpareTime, error) {
@@ -39,13 +39,13 @@ func (aHimatch *Himatch) DeleteSpareTime(aID string) error {
 }
 
 func (aHimatch *Himatch) FilterSpareTimesByTime(aTime time.Time) ([]model.SpareTime, error) {
-	return aHimatch.filterSpareTime(func(aSpareTime *model.SpareTime) {
+	return aHimatch.filterSpareTime(func(aSpareTime *model.SpareTime) bool {
 		return aSpareTime.Start.Equal(aTime) || aSpareTime.Start.Before(aTime) && aSpareTime.End.After(aTime)
 	})
 }
 
 func (aHimatch *Himatch) FilterSpareTimesByTags(aTags []string) ([]model.SpareTime, error) {
-	return aHimatch.filterSpareTime(func(aSpareTime *model.SpareTime) {
+	return aHimatch.filterSpareTime(func(aSpareTime *model.SpareTime) bool {
 		tIsContains := true
 
 		for _, tTag := range aTags {
@@ -65,13 +65,13 @@ func (aHimatch *Himatch) FilterSpareTimesByTags(aTags []string) ([]model.SpareTi
 }
 
 func (aHimatch *Himatch) FilterSpareTimesByUserID(aUserID string) ([]model.SpareTime, error) {
-	return aHimatch.filterSpareTime(func(aSpareTime *model.SpareTime) {
+	return aHimatch.filterSpareTime(func(aSpareTime *model.SpareTime) bool {
 		return aSpareTime.UserID == aUserID
 	})
 }
 
 func (aHimatch *Himatch) FilterSpareTimesByTagsAndTime(aTime time.Time, aTags []string) ([]model.SpareTime, error) {
-	return aHimatch.filterSpareTime(func(aSpareTime *model.SpareTime) {
+	return aHimatch.filterSpareTime(func(aSpareTime *model.SpareTime) bool {
 		if !(aSpareTime.Start.Equal(aTime) || aSpareTime.Start.Before(aTime) && aSpareTime.End.After(aTime)) {
 			return false
 		}
@@ -93,10 +93,10 @@ func (aHimatch *Himatch) FilterSpareTimesByTagsAndTime(aTime time.Time, aTags []
 	})
 }
 
-func (aHimatch *Himatch) filterSpareTime(aFilter func(aSpareTime *model.SpareTime) bool) []model.SpareTime {
+func (aHimatch *Himatch) filterSpareTime(aFilter func(aSpareTime *model.SpareTime) bool) ([]model.SpareTime, error) {
 	tSpareTimes, tError := aHimatch.database.LoadAllSpareTimes()
 	if tError != nil {
-
+		return nil, tError
 	}
 
 	tNewSpareTimes := []model.SpareTime{}
@@ -105,5 +105,5 @@ func (aHimatch *Himatch) filterSpareTime(aFilter func(aSpareTime *model.SpareTim
 			tSpareTimes = append(tNewSpareTimes, tSpareTime)
 		}
 	}
-	return tNewSpareTimes
+	return tNewSpareTimes, nil
 }

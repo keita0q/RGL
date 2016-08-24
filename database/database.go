@@ -11,6 +11,8 @@ type Database interface {
 	LoadSpareTime(aID string) (*model.SpareTime, error)
 	SaveSpareTime(aSpareTime *model.SpareTime) error
 	DeleteSpareTime(aID string) error
+
+	Close() error
 }
 
 type NotFoundError struct {
