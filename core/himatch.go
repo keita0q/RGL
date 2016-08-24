@@ -102,7 +102,7 @@ func (aHimatch *Himatch) filterSpareTime(aFilter func(aSpareTime *model.SpareTim
 	tNewSpareTimes := []model.SpareTime{}
 	for _, tSpareTime := range tSpareTimes {
 		if aFilter(&tSpareTime) {
-			append(tNewSpareTimes, tSpareTime)
+			tSpareTimes = append(tNewSpareTimes, tSpareTime)
 		}
 	}
 	return tNewSpareTimes
