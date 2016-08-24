@@ -52,8 +52,8 @@ func main() {
 
 		tContextPath := "/" + tConfig.ContextPath + "/"
 		tService := service.New(&service.Config{
-			Database: local.NewDatabase(tConfig.SavePath),
-			ContextPath: tContextPath,
+			Database:     local.NewDatabase(tConfig.SavePath),
+			ContextPath:  tContextPath,
 			ResourcePath: tConfig.ResourcePath,
 		})
 		if tError != nil {
@@ -95,6 +95,6 @@ func main() {
 type config struct {
 	ContextPath  string `json:"context_path"`
 	Port         int    `json:"port"`
-	SavePath     string `json:"save_path"`github.com/keita0q/himatch
+	SavePath     string `json:"save_path"`
 	ResourcePath string `json:"resource_path"`
 }
