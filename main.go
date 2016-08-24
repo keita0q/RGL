@@ -2,6 +2,8 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/codegangsta/cli"
+	"github.com/drone/routes"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -11,9 +13,7 @@ import (
 	"strconv"
 
 	"bitbucket.org/e_ml_framework/yamada_system/fx_chart_evaluator/database/local"
-	"bitbucket.org/e_ml_framework/yamada_system/fx_chart_evaluator/service"
-	"github.com/codegangsta/cli"
-	"github.com/drone/routes"
+	"github.com/keita0q/himatch/service"
 )
 
 func main() {
@@ -66,14 +66,14 @@ func main() {
 		tRouter.Get(path.Join(tContextPath, "/rest/v1/users/:id"), tService.GetUser)
 		// tRouter.Get(path.Join(tContextPath, "/rest/v1/users/:type/:id"), tService.GetTeacherData)
 		tRouter.Post(path.Join(tContextPath, "/rest/v1/users"), tService.SaveUser)
-		tRouter.Put(path.Join(tContextPath, "/rest/v1/users"), tService.SaveUser)
+		tRouter.Put(path.Join(tContextPath, "/rest/v1/users"), tService.EditUser)
 		tRouter.Del(path.Join(tContextPath, "/rest/v1/users/:id"), tService.DeleteUser)
 
 		tRouter.Get(path.Join(tContextPath, "/rest/v1/spares/:id"), tService.GetSpareTime)
-		tRouter.Get(path.Join(tContextPath, "/rest/v1/spares"), tService.FileterSpareTimes)
+		tRouter.Get(path.Join(tContextPath, "/rest/v1/spares"), tService.FilterSpareTimes)
 		tRouter.Post(path.Join(tContextPath, "/rest/v1/spares"), tService.SaveSpareTime)
-		tRouter.Put(path.Join(tContextPath, "/rest/v1/spares"), tService.EditSpareTime)
-		tRouter.Delete(path.Join(tContextPath, "/rest/v1/spares/:id"), tService.DeleteSpareTime)
+		tRouter.Put(path.Join(tContextPath, "/rest/v1/spares"), tService.SaveSpareTime)
+		tRouter.Del(path.Join(tContextPath, "/rest/v1/spares/:id"), tService.DeleteSpareTime)
 		tRouter.Get(path.Join(tContextPath, "/rest/v1/spares/users/:userId"), tService.GetUserSpareTimes)
 		//
 		// tRouter.Get(path.Join(tContextPath, "/rest/v1/spares"), tService.GetAllProgressInfos)
