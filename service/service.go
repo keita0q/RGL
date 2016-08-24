@@ -72,6 +72,7 @@ func (aService *Service) GetUser(aWriter http.ResponseWriter, aRequest *http.Req
 			Name: tUser.Name,
 			Age:  tUser.Age,
 			Sns:  tUser.Sns,
+			Tags: tUser.Tags,
 		}
 		return http.StatusOK, tReturnUser, nil
 	})(aWriter, aRequest)
@@ -84,7 +85,6 @@ func (aService *Service) SaveUser(aWriter http.ResponseWriter, aRequest *http.Re
 		if tError := json.Unmarshal(aRequestBody, tUser); tError != nil {
 			return http.StatusBadRequest, nil, tError
 		}
-
 		if tError := aService.himatch.SaveUser(tUser); tError != nil {
 			return http.StatusInternalServerError, nil, tError
 		}

@@ -18,7 +18,17 @@ func NewDatabase(aSavePath string) (*BoltDB, error) {
 	if tError != nil {
 		return nil, tError
 	}
-	return &BoltDB{db: tDB, userBucketName:[]byte("users"), spareTimeBucketName:[]byte("spares")}, nil
+	tBolt := &BoltDB{db: tDB, userBucketName:[]byte("users"), spareTimeBucketName:[]byte("spares")}
+	tDB.Update(func(tx *bolt.Tx) error {
+		_, tError := tx.CreateBucketIfNotExists(tBolt.userBucketName)
+		if tError != nil {
+			return tError
+		}
+		_, tError = tx.CreateBucketIfNotExists(tBolt.spareTimeBucketName)
+
+		return tError
+	})
+	return tBolt, nil
 }
 
 func (aBolt *BoltDB) LoadUser(aID string) (*model.User, error) {

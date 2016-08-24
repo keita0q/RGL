@@ -70,7 +70,6 @@ func main() {
 		tRouter := routes.New()
 
 		tRouter.Get(path.Join(tContextPath, "/rest/v1/users/:id"), tService.GetUser)
-		// tRouter.Get(path.Join(tContextPath, "/rest/v1/users/:type/:id"), tService.GetTeacherData)
 		tRouter.Post(path.Join(tContextPath, "/rest/v1/users"), tService.SaveUser)
 		tRouter.Put(path.Join(tContextPath, "/rest/v1/users"), tService.EditUser)
 		tRouter.Del(path.Join(tContextPath, "/rest/v1/users/:id"), tService.DeleteUser)
@@ -81,11 +80,6 @@ func main() {
 		tRouter.Put(path.Join(tContextPath, "/rest/v1/spares"), tService.SaveSpareTime)
 		tRouter.Del(path.Join(tContextPath, "/rest/v1/spares/:id"), tService.DeleteSpareTime)
 		tRouter.Get(path.Join(tContextPath, "/rest/v1/spares/users/:userId"), tService.GetUserSpareTimes)
-		//
-		// tRouter.Get(path.Join(tContextPath, "/rest/v1/spares"), tService.GetAllProgressInfos)
-		// tRouter.Get(path.Join(tContextPath, "/rest/v1/badregions/:type"),tService.GetBadRegions)
-		// tRouter.Put(path.Join(tContextPath, "/rest/v1/badregions"),tService.PutBadRegion)
-		// tRouter.Del(path.Join(tContextPath, "/rest/v1/badregions/:type/:id"),tService.DeleteBadRegion)
 
 		tRouter.Get(path.Join(tContextPath, "/.*"), tService.GetFile)
 
