@@ -11,9 +11,8 @@ import (
 	"path"
 	"path/filepath"
 	"strconv"
-
-	"bitbucket.org/e_ml_framework/yamada_system/fx_chart_evaluator/database/local"
 	"github.com/keita0q/himatch/service"
+	"github.com/keita0q/himatch/database/bolt"
 )
 
 func main() {
@@ -52,7 +51,7 @@ func main() {
 
 		tContextPath := "/" + tConfig.ContextPath + "/"
 		tService := service.New(&service.Config{
-			Database:     local.NewDatabase(tConfig.SavePath),
+			Database:     bolt.NewDatabase(tConfig.SavePath),
 			ContextPath:  tContextPath,
 			ResourcePath: tConfig.ResourcePath,
 		})
