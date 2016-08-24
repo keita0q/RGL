@@ -1,0 +1,6 @@
+{
+  "context_path":"fce",
+  "port":8080,
+  "save_path" :"out",
+  "resource_path":"webapp/"
+}
