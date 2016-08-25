@@ -82,8 +82,8 @@ need body
   "user_id": "hgoe@gmail.com",
   "start": "2013-09-29T17:21:12Z",
   "end": "2013-09-29T17:41:12Z",
-  "Comment": "develop shimane",
-  "Tags": [
+  "comment": "develop shimane",
+  "tags": [
     "shimane",
     "develop"
   ]
@@ -121,8 +121,8 @@ need body
   "user_id": "hgoe@gmail.com",
   "start": "2013-09-29T17:21:12Z",
   "end": "2013-09-29T17:41:12Z",
-  "Comment": "develop shimane",
-  "Tags": [
+  "comment": "develop shimane",
+  "tags": [
     "shimane",
     "develop"
   ]
