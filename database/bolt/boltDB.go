@@ -70,14 +70,14 @@ func (aBolt *BoltDB)DeleteUser(aID string) error {
 func (aBolt *BoltDB)LoadAllSpareTimes() ([]model.SpareTime, error) {
 	tSpareTimes := []model.SpareTime{}
 	tError := aBolt.db.View(func(tx *bolt.Tx) error {
-		tBucket := tx.Bucket(aBolt.userBucketName)
+		tBucket := tx.Bucket(aBolt.spareTimeBucketName)
 		return tBucket.ForEach(func(_, aValue []byte) error {
-			tSpareTime := &model.SpareTime{}
+			tSpareTime := model.SpareTime{}
 
-			if tError := json.Unmarshal(aValue, tSpareTime); tError != nil {
+			if tError := json.Unmarshal(aValue, &tSpareTime); tError != nil {
 				return tError
 			}
-			tSpareTimes = append(tSpareTimes, *tSpareTime)
+			tSpareTimes = append(tSpareTimes, tSpareTime)
 			return nil
 		})
 	})
