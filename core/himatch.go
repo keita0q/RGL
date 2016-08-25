@@ -47,7 +47,6 @@ func (aHimatch *Himatch) FilterSpareTimesByTime(aTime time.Time) ([]model.SpareT
 func (aHimatch *Himatch) FilterSpareTimesByTags(aTags []string) ([]model.SpareTime, error) {
 	return aHimatch.filterSpareTime(func(aSpareTime *model.SpareTime) bool {
 		tIsContains := true
-
 		for _, tTag := range aTags {
 			for _, t := range aSpareTime.Tags {
 				tIsContains = false
@@ -102,7 +101,7 @@ func (aHimatch *Himatch) filterSpareTime(aFilter func(aSpareTime *model.SpareTim
 	tNewSpareTimes := []model.SpareTime{}
 	for _, tSpareTime := range tSpareTimes {
 		if aFilter(&tSpareTime) {
-			tSpareTimes = append(tNewSpareTimes, tSpareTime)
+			tNewSpareTimes = append(tNewSpareTimes, tSpareTime)
 		}
 	}
 	return tNewSpareTimes, nil
