@@ -1,0 +1,8 @@
+.box_border {
+width: 400px; height: 50px;
+border: solid 5px #008080;
+box-shadow: 0 1px 0 rgba(0,0,0,1);
+}
+
+
+

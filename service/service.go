@@ -54,6 +54,7 @@ type user struct {
 	ID   string     `json:"id"`
 	Name string     `json:"name"`
 	Age  int        `json:"age"`
+	Sex  string     `json:"sex"`
 	Sns  *model.Sns `json:"sns"`
 	Tags []string   `json:"tags"`
 }
@@ -71,6 +72,7 @@ func (aService *Service) GetUser(aWriter http.ResponseWriter, aRequest *http.Req
 			ID:   tUser.ID,
 			Name: tUser.Name,
 			Age:  tUser.Age,
+			Sex:  tUser.Sex,
 			Sns:  tUser.Sns,
 			Tags: tUser.Tags,
 		}
@@ -152,39 +154,43 @@ func (aService *Service) GetUserSpareTime(aWriter http.ResponseWriter, aRequest 
 
 func (aService *Service) FilterSpareTimes(aWriter http.ResponseWriter, aRequest *http.Request) {
 	aService.handler(func(aQueries url.Values, aRequestBody []byte) (int, interface{}, error) {
+		
+		tTime := aQueries["time"]
+		tTag := aQueries["tag"]
 
-		type request struct {
-			Tags []string  `json:"tags,omitempty"`
-			Time time.Time `json:"time, omitempty"`
-		}
-		tRequest := &request{}
-
-		if tError := json.Unmarshal(aRequestBody, tRequest); tError != nil {
-			return http.StatusBadRequest, nil, tError
-		}
-
-		if tRequest.Tags == nil && tRequest.Time.IsZero() {
+		if len(tTag) == 0 && len(tTime) == 0 {
 			return http.StatusBadRequest, nil, nil
 		}
 
+		
+		
 		tSpareTimes := []model.SpareTime{}
-		if tRequest.Tags != nil && !tRequest.Time.IsZero() {
-			tSpareTimes, tError := aService.himatch.FilterSpareTimesByTagsAndTime(tRequest.Time, tRequest.Tags)
+		if len(tTag) != 0 && len(tTime) != 0 {
+			t,tError := time.Parse("2006-01-02T15:04:05Z",tTime[0])
+			if tError != nil{
+				return http.StatusBadRequest, nil, tError
+			}
+			tSpareTimes, tError := aService.himatch.FilterSpareTimesByTagsAndTime(t, tTag)
 			if tError != nil {
 				return http.StatusInternalServerError, nil, tError
 			}
 			return http.StatusOK, tSpareTimes, nil
 		}
 
-		if tRequest.Tags != nil {
-			tSpareTimes, tError := aService.himatch.FilterSpareTimesByTags(tRequest.Tags)
+		if len(tTag) != 0 {
+			tSpareTimes, tError := aService.himatch.FilterSpareTimesByTags(tTag)
 			if tError != nil {
 				return http.StatusInternalServerError, nil, tError
 			}
 			return http.StatusOK, tSpareTimes, nil
 		}
-
-		tSpareTimes, tError := aService.himatch.FilterSpareTimesByTime(tRequest.Time)
+		
+		t,tError := time.Parse("2006-01-02T15:04:05Z",tTime[0])
+		if tError != nil{
+			return http.StatusBadRequest, nil, tError
+		}
+		
+		tSpareTimes, tError = aService.himatch.FilterSpareTimesByTime(t)
 		if tError != nil {
 			return http.StatusInternalServerError, nil, tError
 		}
