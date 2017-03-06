@@ -85,7 +85,11 @@ func main() {
 
 		http.Handle(tContextPath, tRouter)
 
-		http.ListenAndServe(":" + strconv.Itoa(tConfig.Port), nil)
+		tPort := os.Getenv("PORT")
+		if tPort == "" {
+			tPort = strconv.Itoa(tConfig.Port)
+		}
+		http.ListenAndServe(":" + tPort, nil)
 	}
 
 	tApp.Run(os.Args)
