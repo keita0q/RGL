@@ -1,0 +1,25 @@
+{
+	"ImportPath": "github.com/keita0q/himatch",
+	"GoVersion": "go1.7",
+	"GodepVersion": "v79",
+	"Deps": [
+		{
+			"ImportPath": "github.com/boltdb/bolt",
+			"Comment": "v1.3.0-58-ge9cf4fa",
+			"Rev": "e9cf4fae01b5a8ff89d0ec6b32f0d9c9f79aefdd"
+		},
+		{
+			"ImportPath": "github.com/codegangsta/cli",
+			"Comment": "v1.19.1-24-g9e5b048",
+			"Rev": "9e5b04886c4bfee2ceba1465b8121057355c4e53"
+		},
+		{
+			"ImportPath": "github.com/drone/routes",
+			"Rev": "853bef2b231162bb7b09355720416d3af1510d88"
+		},
+		{
+			"ImportPath": "golang.org/x/sys/unix",
+			"Rev": "e48874b42435b4347fc52bdee0424a52abc974d7"
+		}
+	]
+}
