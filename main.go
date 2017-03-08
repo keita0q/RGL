@@ -49,7 +49,8 @@ func main() {
 			os.Exit(1)
 		}
 
-		tContextPath := "/" + tConfig.ContextPath + "/"
+		// tContextPath := "/" + tConfig.ContextPath + "/"
+		tContextPath := "/"
 		tDB, tError := bolt.NewDatabase(tConfig.SavePath)
 		if tError != nil {
 			log.Println(tError)
